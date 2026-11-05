@@ -1,0 +1,2558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mini Coding Olympiad</title>
+<style>
+:root{--bg:#f4f7f4;--sf:#fff;--ink:#0f1f16;--mu:#5d6f63;--ln:#e1e9e2;--gr:#168a43;--gr2:#34c76f;--gi:#fff;--or:#f08a24;--pb:#e4f7ea;--pk:#117a3a;--fb:#fff1e2;--fk:#b45309;--sh:0 1px 2px rgba(15,31,22,.06),0 8px 24px rgba(15,31,22,.07);--confetti-speed:3.2s;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#09100c;--sf:#121c16;--ink:#e8f1ea;--mu:#93a99a;--ln:#223128;--gr:#2fbf68;--gr2:#4ade80;--gi:#06120a;--or:#fb9d3c;--pb:#12301f;--pk:#6ee7a0;--fb:#33210e;--fk:#fdba74;--sh:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font:16px/1.55 "Inter","Segoe UI",system-ui,-apple-system,sans-serif;background:radial-gradient(900px 420px at 85% -10%,rgba(52,199,111,.16),transparent 60%),radial-gradient(700px 380px at -10% 0,rgba(240,138,36,.10),transparent 55%),var(--bg);min-height:100vh}
+button,input,textarea{font:inherit;color:inherit}:focus-visible{outline:3px solid var(--or);outline-offset:2px}
+.nosel{user-select:none;-webkit-user-select:none}
+header{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px clamp(16px,3vw,32px);background:color-mix(in srgb,var(--sf) 82%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--ln)}
+.brand{display:flex;align-items:center;gap:12px}.logo{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--gr),var(--gr2));color:#fff;font:700 15px ui-monospace,Consolas,monospace}
+header h1{margin:0;font-size:1.1rem;font-weight:800;letter-spacing:-.02em;line-height:1.2}header small{color:var(--mu);font-size:.82rem}
+.right{display:flex;align-items:center;gap:14px;text-align:right}#who{color:var(--mu);font-size:.85rem}
+.pts{display:flex;align-items:center;gap:8px;padding:6px 16px 6px 12px;border-radius:999px;background:var(--pb);color:var(--pk);font-weight:700}
+.pts .star{color:var(--or);font-size:1.1rem}.pts b{font-size:1.45rem;line-height:1;font-variant-numeric:tabular-nums}.pts .of{font-size:.85rem;font-weight:600;opacity:.85}
+.pts.bump{animation:bump .6s cubic-bezier(.3,1.6,.5,1)}@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.25);box-shadow:0 0 0 8px rgba(52,199,111,.25)}100%{transform:scale(1)}}
+.prog{height:4px;background:var(--ln)}.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gr),var(--gr2));border-radius:0 4px 4px 0;transition:width .6s cubic-bezier(.3,1,.4,1)}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:16px;box-shadow:var(--sh)}
+.center{max-width:480px;margin:9vh auto 0;padding:32px 30px}
+.center h2{margin:0 0 6px;font-size:1.7rem;letter-spacing:-.03em;line-height:1.15}.center>p{color:var(--mu);margin:0 0 18px}
+.rules{margin:0 0 6px;padding:12px 14px;border-radius:12px;background:var(--bg);color:var(--mu);font-size:.9rem}.rules b{color:var(--ink)}
+label{display:block;font-size:.85rem;font-weight:600;margin:14px 0 6px}
+input[type=text],input[type=number]{width:100%;padding:12px 14px;border:1.5px solid var(--ln);border-radius:12px;background:var(--sf);transition:border-color .15s,box-shadow .15s}
+input:focus{outline:none;border-color:var(--gr);box-shadow:0 0 0 4px rgba(52,199,111,.2)}input[readonly]{background:var(--bg);color:var(--mu)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;background:linear-gradient(135deg,var(--gr),#12a652);color:var(--gi);padding:10px 20px;border-radius:12px;font-weight:700;cursor:pointer;box-shadow:0 6px 16px rgba(22,138,67,.28);transition:transform .15s,box-shadow .15s,filter .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.06)}.btn:active:not(:disabled){transform:translateY(0)}
+.btn:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}
+.btn.g{background:var(--sf);color:var(--ink);box-shadow:none;border:1.5px solid var(--ln)}.btn.g:hover:not(:disabled){border-color:var(--gr);transform:none}
+#startBtn{width:100%;margin-top:18px;padding:14px;font-size:1.05rem}#run::before{content:"\25B6";font-size:.75rem}
+.err{color:var(--fk);min-height:1.4em;margin:10px 0 0;font-size:.92rem}
+#app{display:none;padding:20px clamp(16px,3vw,32px) 48px;max-width:1500px;margin:0 auto}
+.bar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;margin-bottom:16px}
+.chips{display:flex;gap:8px}.chip{width:42px;height:42px;border-radius:50%;border:2px solid var(--ln);background:var(--sf);font-weight:700;cursor:pointer;transition:all .2s}
+.chip:hover{border-color:var(--gr)}.chip.on{border-color:var(--or);box-shadow:0 0 0 4px rgba(240,138,36,.18)}.chip.ok{background:var(--gr);border-color:var(--gr);color:var(--gi)}
+.meta{color:var(--mu);font-size:.9rem}.meta strong{color:var(--ink);font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:minmax(280px,420px) minmax(0,1fr);gap:20px}@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.q{padding:24px}.q h2{margin:0 0 6px;font-size:1.35rem;letter-spacing:-.02em}.q .meta{margin:0 0 14px}.q p{margin:0 0 14px}#qx{font-size:1.08rem;line-height:1.6}
+.hint{border-left:4px solid var(--or);background:var(--fb);padding:10px 14px;border-radius:0 12px 12px 0;font-size:.9rem}
+code{font-family:ui-monospace,Consolas,monospace;background:rgba(127,127,127,.15);padding:1px 6px;border-radius:5px;font-size:.9em}
+.editor{overflow:hidden;background:#0d1511;border-color:#1c2a22}
+.eh{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;background:#131d17;border-bottom:1px solid #1c2a22;flex-wrap:wrap;color:#cfe0d4}
+.dots{display:inline-flex;gap:6px;margin-right:10px;vertical-align:middle}.dots i{width:11px;height:11px;border-radius:50%;background:#ff5f57}.dots i:nth-child(2){background:#febc2e}.dots i:nth-child(3){background:#28c840}
+.eh .btn.g{background:transparent;color:#cfe0d4;border-color:#2a3b31}
+textarea{display:block;width:100%;height:46vh;min-height:280px;border:0;padding:16px 18px;background:#0d1511;color:#e6f2ea;caret-color:var(--gr2);font:15.5px/1.65 "JetBrains Mono",ui-monospace,Consolas,monospace;tab-size:4;resize:vertical}textarea:focus{outline:none;box-shadow:inset 0 0 0 2px rgba(52,199,111,.45)}
+.res{padding:18px 20px;margin-top:20px}.res h3{margin:0 0 10px;font-size:1.05rem}
+table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--ln);font-size:.92rem}th{color:var(--mu);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+td.m,pre{font-family:ui-monospace,Consolas,monospace;font-size:.88rem}pre{white-space:pre-wrap;background:var(--bg);padding:12px;border-radius:12px;margin:10px 0 0;overflow-x:auto}
+.b{padding:2px 12px;border-radius:99px;font-weight:700;font-size:.8rem}.b.p{background:var(--pb);color:var(--pk)}.b.f{background:var(--fb);color:var(--fk)}
+.box{background:var(--fb);border-left:4px solid var(--or);padding:10px 14px;border-radius:0 12px 12px 0;margin-bottom:8px}
+.res.ok{border-color:var(--gr2);box-shadow:0 0 0 4px rgba(52,199,111,.15),var(--sh)}
+.ov{position:fixed;inset:0;background:rgba(6,12,8,.9);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:60;padding:20px}
+.ov .card{max-width:480px;padding:28px;text-align:center}.ov h2{margin:0 0 8px}
+.cel{position:fixed;inset:0;z-index:40;display:none;align-items:center;justify-content:center;pointer-events:none}.cel.show{display:flex}
+.cel .pop{display:grid;justify-items:center;gap:4px;padding:26px 40px;border-radius:24px;background:var(--sf);border:1px solid var(--ln);box-shadow:0 20px 60px rgba(0,0,0,.28);animation:pop .5s cubic-bezier(.2,1.5,.4,1) both,out .35s ease calc(var(--cs,3.2s) - .3s) forwards}
+.cel.big .pop{animation:pop .5s cubic-bezier(.2,1.5,.4,1) both,out .35s ease calc(var(--cs,3.2s) + .7s) forwards}
+.cel h3{margin:6px 0 0;font-size:1.6rem;letter-spacing:-.02em}.cel p{margin:0;color:var(--pk);font-weight:700;font-size:1.1rem}
+.cel svg{width:84px;height:84px}.cel circle{fill:var(--pb);stroke:var(--gr2);stroke-width:4;stroke-dasharray:166;stroke-dashoffset:166;animation:dr .6s ease .1s forwards}
+.cel path{fill:none;stroke:var(--gr);stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:48;stroke-dashoffset:48;animation:dr .4s ease .55s forwards}
+.conf{position:absolute;left:50%;top:50%}.conf i{position:absolute;width:10px;height:14px;border-radius:3px;animation:burst var(--cs,3.2s) cubic-bezier(.2,.7,.3,1) var(--d) forwards;opacity:0}
+@keyframes dr{to{stroke-dashoffset:0}}@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}@keyframes out{to{opacity:0;transform:translateY(-12px) scale(.96)}}
+@keyframes burst{0%{transform:translate(0,0) scale(0);opacity:1}45%{transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(1);opacity:1}100%{transform:translate(var(--x),calc(var(--y) + 75vh)) rotate(calc(var(--r)*2)) scale(1);opacity:0}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0s!important;transition:none!important}}
+.layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:20px;align-items:start}
+.side{padding:12px;position:sticky;top:76px;max-height:calc(100vh - 100px);overflow:auto}.side h3{margin:4px 8px 8px;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mu)}
+.qi{display:flex;gap:10px;align-items:center;width:100%;text-align:left;padding:8px 10px;border:0;border-radius:10px;background:transparent;cursor:pointer;line-height:1.3}
+.qi:hover{background:var(--bg)}.qi.on{background:var(--bg);box-shadow:inset 3px 0 0 var(--or)}
+.qi .n{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:700;border:2px solid var(--ln)}
+.qi.ok .n{background:var(--gr);border-color:var(--gr);color:var(--gi)}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.side{position:static;max-height:220px}}
+.cat{display:flex;justify-content:space-between;margin:14px 8px 4px;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}.cat span:last-child{font-weight:600;text-transform:none;letter-spacing:0;opacity:.8}
+.cat.easy{color:var(--pk)}.cat.medium{color:var(--fk)}.cat.hard{color:#e05252}
+.exh{margin:20px 0 8px;font-size:1rem}.ex{margin:0 0 12px}.exl{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mu);margin:8px 0 4px}
+.q pre{margin:0;background:var(--bg);padding:10px 12px;border-radius:12px;white-space:pre-wrap;max-height:260px;overflow:auto;font-family:ui-monospace,Consolas,monospace;font-size:.9rem}.exn{font-size:.85rem;color:var(--mu);margin:6px 0 0!important}
+.res td pre.co{margin:0;padding:10px 14px;max-height:240px;overflow:auto;white-space:pre-wrap;background:#0d1511;color:#e6f2ea;border-radius:10px;line-height:1.5}
+.inp{font-size:.78rem;color:var(--mu);margin-top:4px;white-space:nowrap}
+#burst{position:fixed;inset:0;z-index:35;pointer-events:none;overflow:hidden}
+#burst i{position:absolute;bottom:-16px;width:10px;height:15px;border-radius:3px;opacity:0;animation:rise var(--t,2.4s) linear var(--d,0s) both;will-change:transform}
+@keyframes rise{0%{transform:translate(0,0) rotate(0);opacity:1;animation-timing-function:cubic-bezier(.1,.8,.3,1)}
+45%{transform:translate(var(--dx),var(--up)) rotate(var(--r));opacity:1;animation-timing-function:cubic-bezier(.55,0,.9,.6)}
+100%{transform:translate(calc(var(--dx) * 1.5),var(--fall)) rotate(calc(var(--r) * 2));opacity:1}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><span class="logo">&lt;/&gt;</span><div><h1>Mini Coding Olympiad</h1><small>Challenge set &nbsp;|&nbsp; Computer Programming 1, C language</small></div></div>
+  <div class="right"><small id="who"></small><div class="pts" id="ptsBox" style="visibility:hidden"><span class="star">&#9733;</span><b id="pts">0</b><span class="of">/ <span id="ptsMax">5</span> pts</span></div></div>
+</header>
+<div class="prog"><i id="progBar"></i></div>
+
+<section id="start" class="center card">
+  <h2>Before you start</h2>
+  <p>Solve as many of the 30 questions as you can in C. Easy questions are worth 1 point, medium 2, and hard 3.</p>
+  <label for="ln">Last name</label><input id="ln" type="text" maxlength="40" autocomplete="off">
+  <label for="fn">First name</label><input id="fn" type="text" maxlength="40" autocomplete="off">
+  <p class="meta" id="startNote" style="margin:10px 0 0"></p>
+  <p class="err" id="startErr" role="alert"></p>
+  <div class="rules"><b>Heads up:</b> the quiz opens in full screen. Leaving it, or switching tabs, is counted as a warning.</div>
+  <button class="btn" id="startBtn" type="button">Start</button>
+</section>
+
+<main id="app">
+  <div class="layout">
+    <aside class="side card" aria-label="Questions"><h3>Questions</h3><div id="qlist"></div></aside>
+    <section class="work">
+      <div class="bar">
+        <div class="meta">Time on this question: <strong id="tm">0:00</strong> &nbsp; Runs: <strong id="rn">0</strong> &nbsp; Warnings: <strong id="wn">0</strong></div>
+        <div><button class="btn g" id="prev" type="button">Previous</button> <button class="btn g" id="next" type="button">Next question</button> <button class="btn g" id="fin" type="button">Finish</button></div>
+      </div>
+      <article class="card q nosel"><h2 id="qt"></h2><p class="meta" id="qm"></p><p id="qx"></p><div id="qs"></div><p class="hint" id="qh"></p></article>
+      <div class="card editor" style="margin-top:20px">
+        <div class="eh"><span><span class="dots"><i></i><i></i><i></i></span><strong>main.c</strong></span><span><button class="btn g" id="reset" type="button">Reset code</button> <button class="btn" id="run" type="button">Run tests</button></span></div>
+        <textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="C code"></textarea>
+      </div>
+      <div class="card res" id="res" aria-live="polite"><h3>Results</h3><p class="meta">Press Run tests (or Ctrl+Enter).</p></div>
+    </section>
+  </div>
+</main>
+
+<div id="burst" aria-hidden="true"></div>
+<div class="cel" id="cel"><div class="conf"></div><div class="pop"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="26"/><path d="M18 31l8 8 16-17"/></svg><h3></h3><p></p></div></div>
+<div class="ov" id="ov"><div class="card"><h2 id="ovT"></h2><p id="ovP"></p><button class="btn" id="ovB" type="button">Return to the quiz</button></div></div>
+<div class="ov" id="sum"><div class="card"><h2>Your result</h2><p id="sumP" style="text-align:left"></p><button class="btn g" id="copy" type="button">Copy result</button> <button class="btn" id="sumX" type="button">Close</button></div></div>
+
+<script>
+/* ===== SETTINGS ===== */
+const POINTS = { easy: 1, medium: 2, hard: 3 };   // points for each question in a category: change the numbers to change the scoring
+const CONFIG = { url: "https://ce.judge0.com", lang: 50, token: "", cooldown: 3,
+  confettiMs: 3200,
+  confettiFrom: "sides",     // "sides" = shoots in from the left and right edges, "bottom" = shoots up from the bottom
+  confettiRepeatMs: 2500,   // confetti repeats this often (milliseconds) while the student stays on a solved question. 0 = no repeat
+  confirmLeave: true,       // true = the browser asks before a refresh or close, to prevent accidents
+  allowCopyPaste: true };   // TESTING SWITCH. true = copy, paste, drag-drop, right-click all allowed. Set to false before the real activity.
+//   // confetti time in milliseconds (1000 = 1 second). Bigger number = slower. Try 4500.
+//   // same code runner as the sample that worked
+const STARTER = "#include <stdio.h>\n\nint main() {\n    // start writing your code here\n\n    return 0;\n}\n";
+const range = (a, b, s = 1) => { const r = []; for (let i = a; s > 0 ? i <= b : i >= b; i += s) r.push(String(i)); return r; };
+/* ===== QUESTIONS (expected = list of answer tokens; stdin = test input) ===== */
+const QUESTIONS = [
+ {
+  "id": "C01",
+  "title": "Skip 3 or 5, keep both",
+  "text": "Use a loop and printf to print the numbers from 1 to 100, one per line. Skip any number divisible by 3 or by 5, unless it is divisible by both (then print it).",
+  "words": [],
+  "fn": null,
+  "loose": false,
+  "tests": [
+   {
+    "stdin": "",
+    "expected": [
+     "1",
+     "2",
+     "4",
+     "7",
+     "8",
+     "11",
+     "13",
+     "14",
+     "15",
+     "16",
+     "17",
+     "19",
+     "22",
+     "23",
+     "26",
+     "28",
+     "29",
+     "30",
+     "31",
+     "32",
+     "34",
+     "37",
+     "38",
+     "41",
+     "43",
+     "44",
+     "45",
+     "46",
+     "47",
+     "49",
+     "52",
+     "53",
+     "56",
+     "58",
+     "59",
+     "60",
+     "61",
+     "62",
+     "64",
+     "67",
+     "68",
+     "71",
+     "73",
+     "74",
+     "75",
+     "76",
+     "77",
+     "79",
+     "82",
+     "83",
+     "86",
+     "88",
+     "89",
+     "90",
+     "91",
+     "92",
+     "94",
+     "97",
+     "98"
+    ]
+   }
+  ],
+  "diff": "easy",
+  "pts": 1,
+  "samples": [
+   {
+    "input": "",
+    "output": "1\n2\n4\n7\n8\n11\n13\n14\n15\n16\n...\n94\n97\n98",
+    "note": "The full output has 59 lines. It is shortened here."
+   }
+  ]
+ },
+ {
+  "id": "C06",
+  "title": "Skip evens unless multiple of 5",
+  "text": "Print the numbers from 1 to 200, one per line. Skip the even numbers, unless they are also divisible by 5 (then print them).",
+  "words": [],
+  "fn": null,
+  "loose": false,
+  "tests": [
+   {
+    "stdin": "",
+    "expected": [
+     "1",
+     "3",
+     "5",
+     "7",
+     "9",
+     "10",
+     "11",
+     "13",
+     "15",
+     "17",
+     "19",
+     "20",
+     "21",
+     "23",
+     "25",
+     "27",
+     "29",
+     "30",
+     "31",
+     "33",
+     "35",
+     "37",
+     "39",
+     "40",
+     "41",
+     "43",
+     "45",
+     "47",
+     "49",
+     "50",
+     "51",
+     "53",
+     "55",
+     "57",
+     "59",
+     "60",
+     "61",
+     "63",
+     "65",
+     "67",
+     "69",
+     "70",
+     "71",
+     "73",
+     "75",
+     "77",
+     "79",
+     "80",
+     "81",
+     "83",
+     "85",
+     "87",
+     "89",
+     "90",
+     "91",
+     "93",
+     "95",
+     "97",
+     "99",
+     "100",
+     "101",
+     "103",
+     "105",
+     "107",
+     "109",
+     "110",
+     "111",
+     "113",
+     "115",
+     "117",
+     "119",
+     "120",
+     "121",
+     "123",
+     "125",
+     "127",
+     "129",
+     "130",
+     "131",
+     "133",
+     "135",
+     "137",
+     "139",
+     "140",
+     "141",
+     "143",
+     "145",
+     "147",
+     "149",
+     "150",
+     "151",
+     "153",
+     "155",
+     "157",
+     "159",
+     "160",
+     "161",
+     "163",
+     "165",
+     "167",
+     "169",
+     "170",
+     "171",
+     "173",
+     "175",
+     "177",
+     "179",
+     "180",
+     "181",
+     "183",
+     "185",
+     "187",
+     "189",
+     "190",
+     "191",
+     "193",
+     "195",
+     "197",
+     "199",
+     "200"
+    ]
+   }
+  ],
+  "diff": "easy",
+  "pts": 1,
+  "samples": [
+   {
+    "input": "",
+    "output": "1\n3\n5\n7\n9\n10\n11\n13\n15\n17\n...\n197\n199\n200",
+    "note": "The full output has 120 lines. It is shortened here."
+   }
+  ]
+ },
+ {
+  "id": "C07",
+  "title": "Multiples of 2 and 3",
+  "text": "Print all numbers from 1 to 50 that are divisible by both 2 and 3, one per line. Then print how many there are, on its own line.",
+  "words": [],
+  "fn": null,
+  "loose": false,
+  "tests": [
+   {
+    "stdin": "",
+    "expected": [
+     "6",
+     "12",
+     "18",
+     "24",
+     "30",
+     "36",
+     "42",
+     "48",
+     "8"
+    ]
+   }
+  ],
+  "diff": "easy",
+  "pts": 1,
+  "samples": [
+   {
+    "input": "",
+    "output": "6\n12\n18\n24\n30\n36\n42\n48\n8",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "id": "C08",
+  "title": "Stop at multiple of 7 over 40",
+  "text": "Print numbers starting from 1, one per line. Stop when you reach a multiple of 7 that is greater than 40 (print that number too).",
+  "words": [],
+  "fn": null,
+  "loose": false,
+  "tests": [
+   {
+    "stdin": "",
+    "expected": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15",
+     "16",
+     "17",
+     "18",
+     "19",
+     "20",
+     "21",
+     "22",
+     "23",
+     "24",
+     "25",
+     "26",
+     "27",
+     "28",
+     "29",
+     "30",
+     "31",
+     "32",
+     "33",
+     "34",
+     "35",
+     "36",
+     "37",
+     "38",
+     "39",
+     "40",
+     "41",
+     "42"
+    ]
+   }
+  ],
+  "diff": "easy",
+  "pts": 1,
+  "samples": [
+   {
+    "input": "",
+    "output": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n...\n40\n41\n42",
+    "note": "The full output has 42 lines. It is shortened here."
+   }
+  ]
+ },
+ {
+  "id": "C10",
+  "title": "Skip last digit 7",
+  "text": "Print the numbers from 1 to 50, one per line, but skip any number whose last digit is 7 (7, 17, 27, 37, 47).",
+  "words": [],
+  "fn": null,
+  "loose": false,
+  "tests": [
+   {
+    "stdin": "",
+    "expected": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15",
+     "16",
+     "18",
+     "19",
+     "20",
+     "21",
+     "22",
+     "23",
+     "24",
+     "25",
+     "26",
+     "28",
+     "29",
+     "30",
+     "31",
+     "32",
+     "33",
+     "34",
+     "35",
+     "36",
+     "38",
+     "39",
+     "40",
+     "41",
+     "42",
+     "43",
+     "44",
+     "45",
+     "46",
+     "48",
+     "49",
+     "50"
+    ]
+   }
+  ],
+  "diff": "easy",
+  "pts": 1,
+  "samples": [
+   {
+    "input": "",
+    "output": "1\n2\n3\n4\n5\n6\n8\n9\n10\n11\n...\n48\n49\n50",
+    "note": "The full output has 45 lines. It is shortened here."
+   }
+  ]
+ },
+ {
+  "id": "C11",
+  "title": "Parking fee",
+  "text": "Use scanf to ask for the number of hours parked (a whole number). The first 2 hours are free, and every hour after that costs 20 pesos. If the total is more than 200 pesos, the fee is a flat 200. Print the fee.",
+  "words": [],
+  "fn": null,
+  "loose": true,
+  "tests": [
+   {
+    "stdin": "1\n",
+    "expected": [
+     "0"
+    ]
+   },
+   {
+    "stdin": "5\n",
+    "expected": [
+     "60"
+    ]
+   },
+   {
+    "stdin": "12\n",
+    "expected": [
+     "200"
+    ]
+   },
+   {
+    "stdin": "20\n",
+    "expected": [
+     "200"
+    ]
+   }
+  ],
+  "diff": "easy",
+  "pts": 1,
+  "samples": [
+   {
+    "input": "1",
+    "output": "0",
+    "note": ""
+   },
+   {
+    "input": "5",
+    "output": "60",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "id": "C12",
+  "title": "Skip multiples of 4 until 100",
+  "text": "Print the numbers from 1 to 120, one per line. Skip any number divisible by 4, unless it is greater than 100 (then print it).",
+  "words": [],
+  "fn": null,
+  "loose": false,
+  "tests": [
+   {
+    "stdin": "",
+    "expected": [
+     "1",
+     "2",
+     "3",
+     "5",
+     "6",
+     "7",
+     "9",
+     "10",
+     "11",
+     "13",
+     "14",
+     "15",
+     "17",
+     "18",
+     "19",
+     "21",
+     "22",
+     "23",
+     "25",
+     "26",
+     "27",
+     "29",
+     "30",
+     "31",
+     "33",
+     "34",
+     "35",
+     "37",
+     "38",
+     "39",
+     "41",
+     "42",
+     "43",
+     "45",
+     "46",
+     "47",
+     "49",
+     "50",
+     "51",
+     "53",
+     "54",
+     "55",
+     "57",
+     "58",
+     "59",
+     "61",
+     "62",
+     "63",
+     "65",
+     "66",
+     "67",
+     "69",
+     "70",
+     "71",
+     "73",
+     "74",
+     "75",
+     "77",
+     "78",
+     "79",
+     "81",
+     "82",
+     "83",
+     "85",
+     "86",
+     "87",
+     "89",
+     "90",
+     "91",
+     "93",
+     "94",
+     "95",
+     "97",
+     "98",
+     "99",
+     "101",
+     "102",
+     "103",
+     "104",
+     "105",
+     "106",
+     "107",
+     "108",
+     "109",
+     "110",
+     "111",
+     "112",
+     "113",
+     "114",
+     "115",
+     "116",
+     "117",
+     "118",
+     "119",
+     "120"
+    ]
+   }
+  ],
+  "diff": "easy",
+  "pts": 1,
+  "samples": [
+   {
+    "input": "",
+    "output": "1\n2\n3\n5\n6\n7\n9\n10\n11\n13\n...\n118\n119\n120",
+    "note": "The full output has 95 lines. It is shortened here."
+   }
+  ]
+ },
+ {
+  "id": "C18",
+  "title": "Skip multiples of 3 unless odd",
+  "text": "Print the numbers from 1 to 60, one per line. Skip any multiple of 3, unless it is also odd (then print it).",
+  "words": [],
+  "fn": null,
+  "loose": false,
+  "tests": [
+   {
+    "stdin": "",
+    "expected": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "13",
+     "14",
+     "15",
+     "16",
+     "17",
+     "19",
+     "20",
+     "21",
+     "22",
+     "23",
+     "25",
+     "26",
+     "27",
+     "28",
+     "29",
+     "31",
+     "32",
+     "33",
+     "34",
+     "35",
+     "37",
+     "38",
+     "39",
+     "40",
+     "41",
+     "43",
+     "44",
+     "45",
+     "46",
+     "47",
+     "49",
+     "50",
+     "51",
+     "52",
+     "53",
+     "55",
+     "56",
+     "57",
+     "58",
+     "59"
+    ]
+   }
+  ],
+  "diff": "easy",
+  "pts": 1,
+  "samples": [
+   {
+    "input": "",
+    "output": "1\n2\n3\n4\n5\n7\n8\n9\n10\n11\n...\n57\n58\n59",
+    "note": "The full output has 50 lines. It is shortened here."
+   }
+  ]
+ },
+ {
+  "id": "C22",
+  "title": "Skip 5s unless also 3",
+  "text": "Print the numbers from 1 to 100, one per line. Skip any number divisible by 5, unless it is also divisible by 3 (then print it).",
+  "words": [],
+  "fn": null,
+  "loose": false,
+  "tests": [
+   {
+    "stdin": "",
+    "expected": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "6",
+     "7",
+     "8",
+     "9",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15",
+     "16",
+     "17",
+     "18",
+     "19",
+     "21",
+     "22",
+     "23",
+     "24",
+     "26",
+     "27",
+     "28",
+     "29",
+     "30",
+     "31",
+     "32",
+     "33",
+     "34",
+     "36",
+     "37",
+     "38",
+     "39",
+     "41",
+     "42",
+     "43",
+     "44",
+     "45",
+     "46",
+     "47",
+     "48",
+     "49",
+     "51",
+     "52",
+     "53",
+     "54",
+     "56",
+     "57",
+     "58",
+     "59",
+     "60",
+     "61",
+     "62",
+     "63",
+     "64",
+     "66",
+     "67",
+     "68",
+     "69",
+     "71",
+     "72",
+     "73",
+     "74",
+     "75",
+     "76",
+     "77",
+     "78",
+     "79",
+     "81",
+     "82",
+     "83",
+     "84",
+     "86",
+     "87",
+     "88",
+     "89",
+     "90",
+     "91",
+     "92",
+     "93",
+     "94",
+     "96",
+     "97",
+     "98",
+     "99"
+    ]
+   }
+  ],
+  "diff": "easy",
+  "pts": 1,
+  "samples": [
+   {
+    "input": "",
+    "output": "1\n2\n3\n4\n6\n7\n8\n9\n11\n12\n...\n97\n98\n99",
+    "note": "The full output has 86 lines. It is shortened here."
+   }
+  ]
+ },
+ {
+  "id": "C27",
+  "title": "Skip multiples of 6 until 80",
+  "text": "Print the numbers from 1 to 100, one per line. Skip any number divisible by 6, unless it is greater than 80 (then print it).",
+  "words": [],
+  "fn": null,
+  "loose": false,
+  "tests": [
+   {
+    "stdin": "",
+    "expected": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "13",
+     "14",
+     "15",
+     "16",
+     "17",
+     "19",
+     "20",
+     "21",
+     "22",
+     "23",
+     "25",
+     "26",
+     "27",
+     "28",
+     "29",
+     "31",
+     "32",
+     "33",
+     "34",
+     "35",
+     "37",
+     "38",
+     "39",
+     "40",
+     "41",
+     "43",
+     "44",
+     "45",
+     "46",
+     "47",
+     "49",
+     "50",
+     "51",
+     "52",
+     "53",
+     "55",
+     "56",
+     "57",
+     "58",
+     "59",
+     "61",
+     "62",
+     "63",
+     "64",
+     "65",
+     "67",
+     "68",
+     "69",
+     "70",
+     "71",
+     "73",
+     "74",
+     "75",
+     "76",
+     "77",
+     "79",
+     "80",
+     "81",
+     "82",
+     "83",
+     "84",
+     "85",
+     "86",
+     "87",
+     "88",
+     "89",
+     "90",
+     "91",
+     "92",
+     "93",
+     "94",
+     "95",
+     "96",
+     "97",
+     "98",
+     "99",
+     "100"
+    ]
+   }
+  ],
+  "diff": "easy",
+  "pts": 1,
+  "samples": [
+   {
+    "input": "",
+    "output": "1\n2\n3\n4\n5\n7\n8\n9\n10\n11\n...\n98\n99\n100",
+    "note": "The full output has 87 lines. It is shortened here."
+   }
+  ]
+ },
+ {
+  "id": "C04",
+  "title": "Average of three scores",
+  "text": "Use scanf to ask for three test scores. Print the average (with decimals, like 78.33). Then print \"Passed\" if the average is 75 or above and all three scores are at least 60, otherwise print \"Failed\".",
+  "words": [
+   "Passed",
+   "Failed"
+  ],
+  "fn": null,
+  "loose": true,
+  "tests": [
+   {
+    "stdin": "80 70 90\n",
+    "expected": [
+     "80.00",
+     "passed"
+    ]
+   },
+   {
+    "stdin": "95 95 50\n",
+    "expected": [
+     "80.00",
+     "failed"
+    ]
+   },
+   {
+    "stdin": "70 70 71\n",
+    "expected": [
+     "70.33",
+     "failed"
+    ]
+   },
+   {
+    "stdin": "75 76 77\n",
+    "expected": [
+     "76.00",
+     "passed"
+    ]
+   }
+  ],
+  "diff": "medium",
+  "pts": 2,
+  "samples": [
+   {
+    "input": "80 70 90",
+    "output": "80.00\nPassed",
+    "note": ""
+   },
+   {
+    "input": "95 95 50",
+    "output": "80.00\nFailed",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "id": "C05",
+  "title": "Double until divisible by 7",
+  "text": "Use scanf to ask for a starting number and a limit. Keep multiplying the number by 2 and print each result. Stop as soon as a result is divisible by 7 (print that result too), or before printing a result that is greater than the limit.",
+  "words": [],
+  "fn": null,
+  "loose": true,
+  "tests": [
+   {
+    "stdin": "3 1000\n",
+    "expected": [
+     "6",
+     "12",
+     "24",
+     "48",
+     "96",
+     "192",
+     "384",
+     "768"
+    ]
+   },
+   {
+    "stdin": "7 100\n",
+    "expected": [
+     "14"
+    ]
+   },
+   {
+    "stdin": "5 100\n",
+    "expected": [
+     "10",
+     "20",
+     "40",
+     "80"
+    ]
+   }
+  ],
+  "diff": "medium",
+  "pts": 2,
+  "samples": [
+   {
+    "input": "3 1000",
+    "output": "6\n12\n24\n48\n96\n192\n384\n768",
+    "note": ""
+   },
+   {
+    "input": "7 100",
+    "output": "14",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "id": "C09",
+  "title": "Doubling from 2",
+  "text": "Start at 2 and keep multiplying by 2. Print each value (starting with 2) and stop before going over 1000. At the end, print how many times you multiplied, on its own line.",
+  "words": [],
+  "fn": null,
+  "loose": false,
+  "tests": [
+   {
+    "stdin": "",
+    "expected": [
+     "2",
+     "4",
+     "8",
+     "16",
+     "32",
+     "64",
+     "128",
+     "256",
+     "512",
+     "8"
+    ]
+   }
+  ],
+  "diff": "medium",
+  "pts": 2,
+  "samples": [
+   {
+    "input": "",
+    "output": "2\n4\n8\n16\n32\n64\n128\n256\n512\n8",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "id": "C13",
+  "title": "Subtract 7 and stop",
+  "text": "Use scanf to ask for a starting number. Keep subtracting 7 and print each result. Stop as soon as the result is negative or divisible by 5 (the result that stops the loop is printed too).",
+  "words": [],
+  "fn": null,
+  "loose": true,
+  "tests": [
+   {
+    "stdin": "40\n",
+    "expected": [
+     "33",
+     "26",
+     "19",
+     "12",
+     "5"
+    ]
+   },
+   {
+    "stdin": "20\n",
+    "expected": [
+     "13",
+     "6",
+     "-1"
+    ]
+   },
+   {
+    "stdin": "9\n",
+    "expected": [
+     "2",
+     "-5"
+    ]
+   }
+  ],
+  "diff": "medium",
+  "pts": 2,
+  "samples": [
+   {
+    "input": "40",
+    "output": "33\n26\n19\n12\n5",
+    "note": ""
+   },
+   {
+    "input": "20",
+    "output": "13\n6\n-1",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "id": "C15",
+  "title": "Add 3 until multiple of 12",
+  "text": "Use scanf to ask for a number (it will always be a multiple of 3). Keep adding 3 and print each result. Stop as soon as the result is a multiple of both 4 and 6 (print that result too).",
+  "words": [],
+  "fn": null,
+  "loose": true,
+  "tests": [
+   {
+    "stdin": "3\n",
+    "expected": [
+     "6",
+     "9",
+     "12"
+    ]
+   },
+   {
+    "stdin": "6\n",
+    "expected": [
+     "9",
+     "12"
+    ]
+   },
+   {
+    "stdin": "21\n",
+    "expected": [
+     "24"
+    ]
+   }
+  ],
+  "diff": "medium",
+  "pts": 2,
+  "samples": [
+   {
+    "input": "3",
+    "output": "6\n9\n12",
+    "note": ""
+   },
+   {
+    "input": "6",
+    "output": "9\n12",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "id": "C19",
+  "title": "Halve until 1",
+  "text": "Use scanf to ask for a starting number. Keep dividing it by 2 (integer division) and print each result. Stop once the result is 1 or below (print that result too).",
+  "words": [],
+  "fn": null,
+  "loose": true,
+  "tests": [
+   {
+    "stdin": "100\n",
+    "expected": [
+     "50",
+     "25",
+     "12",
+     "6",
+     "3",
+     "1"
+    ]
+   },
+   {
+    "stdin": "37\n",
+    "expected": [
+     "18",
+     "9",
+     "4",
+     "2",
+     "1"
+    ]
+   },
+   {
+    "stdin": "8\n",
+    "expected": [
+     "4",
+     "2",
+     "1"
+    ]
+   }
+  ],
+  "diff": "medium",
+  "pts": 2,
+  "samples": [
+   {
+    "input": "100",
+    "output": "50\n25\n12\n6\n3\n1",
+    "note": ""
+   },
+   {
+    "input": "37",
+    "output": "18\n9\n4\n2\n1",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "id": "C21",
+  "title": "Subtract 4 and stop",
+  "text": "Use scanf to ask for a number. Keep subtracting 4 and print each result. Stop as soon as the result is divisible by 6 or drops below 0 (the result that stops the loop is printed too).",
+  "words": [],
+  "fn": null,
+  "loose": true,
+  "tests": [
+   {
+    "stdin": "30\n",
+    "expected": [
+     "26",
+     "22",
+     "18"
+    ]
+   },
+   {
+    "stdin": "7\n",
+    "expected": [
+     "3",
+     "-1"
+    ]
+   },
+   {
+    "stdin": "4\n",
+    "expected": [
+     "0"
+    ]
+   }
+  ],
+  "diff": "medium",
+  "pts": 2,
+  "samples": [
+   {
+    "input": "30",
+    "output": "26\n22\n18",
+    "note": ""
+   },
+   {
+    "input": "7",
+    "output": "3\n-1",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "id": "C23",
+  "title": "Add 6 to reach a target",
+  "text": "Use scanf to ask for a starting number and a target number (the target is larger). Keep adding 6 and print each result. Stop once the result reaches or passes the target (print that result too). At the end, print how many additions were made, on its own line.",
+  "words": [],
+  "fn": null,
+  "loose": true,
+  "tests": [
+   {
+    "stdin": "1 20\n",
+    "expected": [
+     "7",
+     "13",
+     "19",
+     "25",
+     "4"
+    ]
+   },
+   {
+    "stdin": "5 40\n",
+    "expected": [
+     "11",
+     "17",
+     "23",
+     "29",
+     "35",
+     "41",
+     "6"
+    ]
+   },
+   {
+    "stdin": "0 6\n",
+    "expected": [
+     "6",
+     "1"
+    ]
+   }
+  ],
+  "diff": "medium",
+  "pts": 2,
+  "samples": [
+   {
+    "input": "1 20",
+    "output": "7\n13\n19\n25\n4",
+    "note": ""
+   },
+   {
+    "input": "5 40",
+    "output": "11\n17\n23\n29\n35\n41\n6",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "id": "C26",
+  "title": "Triple until over 2000",
+  "text": "Use scanf to ask for a starting number. Keep multiplying it by 3 and print each result. Stop as soon as the result is more than 2000 (print that result too). At the end, print how many multiplications were made, on its own line.",
+  "words": [],
+  "fn": null,
+  "loose": true,
+  "tests": [
+   {
+    "stdin": "1\n",
+    "expected": [
+     "3",
+     "9",
+     "27",
+     "81",
+     "243",
+     "729",
+     "2187",
+     "7"
+    ]
+   },
+   {
+    "stdin": "5\n",
+    "expected": [
+     "15",
+     "45",
+     "135",
+     "405",
+     "1215",
+     "3645",
+     "6"
+    ]
+   },
+   {
+    "stdin": "700\n",
+    "expected": [
+     "2100",
+     "1"
+    ]
+   }
+  ],
+  "diff": "medium",
+  "pts": 2,
+  "samples": [
+   {
+    "input": "1",
+    "output": "3\n9\n27\n81\n243\n729\n2187\n7",
+    "note": ""
+   },
+   {
+    "input": "5",
+    "output": "15\n45\n135\n405\n1215\n3645\n6",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "id": "C28",
+  "title": "Add 5 until multiple of 12",
+  "text": "Use scanf to ask for a number. Keep adding 5 and print each result. Stop as soon as the result is a multiple of both 3 and 4 (print that result too).",
+  "words": [],
+  "fn": null,
+  "loose": true,
+  "tests": [
+   {
+    "stdin": "1\n",
+    "expected": [
+     "6",
+     "11",
+     "16",
+     "21",
+     "26",
+     "31",
+     "36"
+    ]
+   },
+   {
+    "stdin": "7\n",
+    "expected": [
+     "12"
+    ]
+   },
+   {
+    "stdin": "10\n",
+    "expected": [
+     "15",
+     "20",
+     "25",
+     "30",
+     "35",
+     "40",
+     "45",
+     "50",
+     "55",
+     "60"
+    ]
+   }
+  ],
+  "diff": "medium",
+  "pts": 2,
+  "samples": [
+   {
+    "input": "1",
+    "output": "6\n11\n16\n21\n26\n31\n36",
+    "note": ""
+   },
+   {
+    "input": "7",
+    "output": "12",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "id": "C02",
+  "title": "Letter grade",
+  "text": "Use scanf to ask for a score between 0 and 100. Print the letter grade (A: 90 to 100, B: 80 to 89, C: 70 to 79, D: 60 to 69, F: below 60). If the score is 95 or above, also print \"With Honors\" on the next line. If the score is below 0 or above 100, print only \"Invalid input\".",
+  "words": [
+   "A",
+   "B",
+   "C",
+   "D",
+   "F",
+   "With",
+   "Honors",
+   "Invalid",
+   "input"
+  ],
+  "fn": null,
+  "loose": true,
+  "tests": [
+   {
+    "stdin": "95\n",
+    "expected": [
+     "A",
+     "with",
+     "honors"
+    ]
+   },
+   {
+    "stdin": "85\n",
+    "expected": [
+     "B"
+    ]
+   },
+   {
+    "stdin": "72\n",
+    "expected": [
+     "C"
+    ]
+   },
+   {
+    "stdin": "65\n",
+    "expected": [
+     "D"
+    ]
+   },
+   {
+    "stdin": "45\n",
+    "expected": [
+     "F"
+    ]
+   },
+   {
+    "stdin": "105\n",
+    "expected": [
+     "invalid",
+     "input"
+    ]
+   }
+  ],
+  "diff": "hard",
+  "pts": 3,
+  "samples": [
+   {
+    "input": "95",
+    "output": "A\nWith Honors",
+    "note": ""
+   },
+   {
+    "input": "85",
+    "output": "B",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "id": "C03",
+  "title": "Skip digit sum divisible by 4",
+  "text": "Print the numbers from 1 to 150, one per line, but skip any number whose digits add up to a multiple of 4. (Example: 13 has a digit sum of 4, so skip it.)",
+  "words": [],
+  "fn": null,
+  "loose": false,
+  "tests": [
+   {
+    "stdin": "",
+    "expected": [
+     "1",
+     "2",
+     "3",
+     "5",
+     "6",
+     "7",
+     "9",
+     "10",
+     "11",
+     "12",
+     "14",
+     "15",
+     "16",
+     "18",
+     "19",
+     "20",
+     "21",
+     "23",
+     "24",
+     "25",
+     "27",
+     "28",
+     "29",
+     "30",
+     "32",
+     "33",
+     "34",
+     "36",
+     "37",
+     "38",
+     "41",
+     "42",
+     "43",
+     "45",
+     "46",
+     "47",
+     "49",
+     "50",
+     "51",
+     "52",
+     "54",
+     "55",
+     "56",
+     "58",
+     "59",
+     "60",
+     "61",
+     "63",
+     "64",
+     "65",
+     "67",
+     "68",
+     "69",
+     "70",
+     "72",
+     "73",
+     "74",
+     "76",
+     "77",
+     "78",
+     "81",
+     "82",
+     "83",
+     "85",
+     "86",
+     "87",
+     "89",
+     "90",
+     "91",
+     "92",
+     "94",
+     "95",
+     "96",
+     "98",
+     "99",
+     "100",
+     "101",
+     "102",
+     "104",
+     "105",
+     "106",
+     "108",
+     "109",
+     "110",
+     "111",
+     "113",
+     "114",
+     "115",
+     "117",
+     "118",
+     "119",
+     "120",
+     "122",
+     "123",
+     "124",
+     "126",
+     "127",
+     "128",
+     "131",
+     "132",
+     "133",
+     "135",
+     "136",
+     "137",
+     "139",
+     "140",
+     "141",
+     "142",
+     "144",
+     "145",
+     "146",
+     "148",
+     "149",
+     "150"
+    ]
+   }
+  ],
+  "diff": "hard",
+  "pts": 3,
+  "samples": [
+   {
+    "input": "",
+    "output": "1\n2\n3\n5\n6\n7\n9\n10\n11\n12\n...\n148\n149\n150",
+    "note": "The full output has 114 lines. It is shortened here."
+   }
+  ]
+ },
+ {
+  "id": "C14",
+  "title": "Skip same first and last digit",
+  "text": "Print the numbers from 1 to 80, one per line, but skip any number whose first digit and last digit are the same (11, 22, ... 77). Single-digit numbers count too, because their first and last digit are the same.",
+  "words": [],
+  "fn": null,
+  "loose": false,
+  "tests": [
+   {
+    "stdin": "",
+    "expected": [
+     "10",
+     "12",
+     "13",
+     "14",
+     "15",
+     "16",
+     "17",
+     "18",
+     "19",
+     "20",
+     "21",
+     "23",
+     "24",
+     "25",
+     "26",
+     "27",
+     "28",
+     "29",
+     "30",
+     "31",
+     "32",
+     "34",
+     "35",
+     "36",
+     "37",
+     "38",
+     "39",
+     "40",
+     "41",
+     "42",
+     "43",
+     "45",
+     "46",
+     "47",
+     "48",
+     "49",
+     "50",
+     "51",
+     "52",
+     "53",
+     "54",
+     "56",
+     "57",
+     "58",
+     "59",
+     "60",
+     "61",
+     "62",
+     "63",
+     "64",
+     "65",
+     "67",
+     "68",
+     "69",
+     "70",
+     "71",
+     "72",
+     "73",
+     "74",
+     "75",
+     "76",
+     "78",
+     "79",
+     "80"
+    ]
+   }
+  ],
+  "diff": "hard",
+  "pts": 3,
+  "samples": [
+   {
+    "input": "",
+    "output": "10\n12\n13\n14\n15\n16\n17\n18\n19\n20\n...\n78\n79\n80",
+    "note": "The full output has 64 lines. It is shortened here."
+   }
+  ]
+ },
+ {
+  "id": "C16",
+  "title": "Skip digit sum over 10",
+  "text": "Print the numbers from 1 to 100, one per line, but skip any number whose digit sum is greater than 10.",
+  "words": [],
+  "fn": null,
+  "loose": false,
+  "tests": [
+   {
+    "stdin": "",
+    "expected": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15",
+     "16",
+     "17",
+     "18",
+     "19",
+     "20",
+     "21",
+     "22",
+     "23",
+     "24",
+     "25",
+     "26",
+     "27",
+     "28",
+     "30",
+     "31",
+     "32",
+     "33",
+     "34",
+     "35",
+     "36",
+     "37",
+     "40",
+     "41",
+     "42",
+     "43",
+     "44",
+     "45",
+     "46",
+     "50",
+     "51",
+     "52",
+     "53",
+     "54",
+     "55",
+     "60",
+     "61",
+     "62",
+     "63",
+     "64",
+     "70",
+     "71",
+     "72",
+     "73",
+     "80",
+     "81",
+     "82",
+     "90",
+     "91",
+     "100"
+    ]
+   }
+  ],
+  "diff": "hard",
+  "pts": 3,
+  "samples": [
+   {
+    "input": "",
+    "output": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n...\n90\n91\n100",
+    "note": "The full output has 64 lines. It is shortened here."
+   }
+  ]
+ },
+ {
+  "id": "C17",
+  "title": "Range skipping multiples of 9",
+  "text": "Use scanf to ask for two numbers (the first is smaller). Print all the numbers from the first to the second, including both, but skip any number divisible by 9. At the end, print how many numbers were skipped, on its own line.",
+  "words": [],
+  "fn": null,
+  "loose": true,
+  "tests": [
+   {
+    "stdin": "1 30\n",
+    "expected": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "10",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15",
+     "16",
+     "17",
+     "19",
+     "20",
+     "21",
+     "22",
+     "23",
+     "24",
+     "25",
+     "26",
+     "28",
+     "29",
+     "30",
+     "3"
+    ]
+   },
+   {
+    "stdin": "10 20\n",
+    "expected": [
+     "10",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15",
+     "16",
+     "17",
+     "19",
+     "20",
+     "1"
+    ]
+   },
+   {
+    "stdin": "19 26\n",
+    "expected": [
+     "19",
+     "20",
+     "21",
+     "22",
+     "23",
+     "24",
+     "25",
+     "26",
+     "0"
+    ]
+   }
+  ],
+  "diff": "hard",
+  "pts": 3,
+  "samples": [
+   {
+    "input": "1 30",
+    "output": "1\n2\n3\n4\n5\n6\n7\n8\n10\n11\n...\n29\n30\n3",
+    "note": "The full output has 28 lines. It is shortened here."
+   },
+   {
+    "input": "10 20",
+    "output": "10\n11\n12\n13\n14\n15\n16\n17\n19\n20\n1",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "id": "C20",
+  "title": "Skip first digit bigger than last",
+  "text": "Print the numbers from 1 to 90, one per line, but skip any number whose first digit is greater than its last digit (for example, 10, 21, 30).",
+  "words": [],
+  "fn": null,
+  "loose": false,
+  "tests": [
+   {
+    "stdin": "",
+    "expected": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15",
+     "16",
+     "17",
+     "18",
+     "19",
+     "22",
+     "23",
+     "24",
+     "25",
+     "26",
+     "27",
+     "28",
+     "29",
+     "33",
+     "34",
+     "35",
+     "36",
+     "37",
+     "38",
+     "39",
+     "44",
+     "45",
+     "46",
+     "47",
+     "48",
+     "49",
+     "55",
+     "56",
+     "57",
+     "58",
+     "59",
+     "66",
+     "67",
+     "68",
+     "69",
+     "77",
+     "78",
+     "79",
+     "88",
+     "89"
+    ]
+   }
+  ],
+  "diff": "hard",
+  "pts": 3,
+  "samples": [
+   {
+    "input": "",
+    "output": "1\n2\n3\n4\n5\n6\n7\n8\n9\n11\n...\n79\n88\n89",
+    "note": "The full output has 53 lines. It is shortened here."
+   }
+  ]
+ },
+ {
+  "id": "C24",
+  "title": "Skip even digit sums",
+  "text": "Print the numbers from 1 to 70, one per line, but skip any number whose digit sum is even.",
+  "words": [],
+  "fn": null,
+  "loose": false,
+  "tests": [
+   {
+    "stdin": "",
+    "expected": [
+     "1",
+     "3",
+     "5",
+     "7",
+     "9",
+     "10",
+     "12",
+     "14",
+     "16",
+     "18",
+     "21",
+     "23",
+     "25",
+     "27",
+     "29",
+     "30",
+     "32",
+     "34",
+     "36",
+     "38",
+     "41",
+     "43",
+     "45",
+     "47",
+     "49",
+     "50",
+     "52",
+     "54",
+     "56",
+     "58",
+     "61",
+     "63",
+     "65",
+     "67",
+     "69",
+     "70"
+    ]
+   }
+  ],
+  "diff": "hard",
+  "pts": 3,
+  "samples": [
+   {
+    "input": "",
+    "output": "1\n3\n5\n7\n9\n10\n12\n14\n16\n18\n...\n67\n69\n70",
+    "note": "The full output has 36 lines. It is shortened here."
+   }
+  ]
+ },
+ {
+  "id": "C25",
+  "title": "Range skipping repeated digits",
+  "text": "Use scanf to ask for two numbers (both between 1 and 99, the first is smaller). Print all the numbers from the first to the second, including both, but skip numbers whose two digits are the same (11, 22, 33...). Single-digit numbers are not skipped. At the end, print how many numbers were printed, on its own line.",
+  "words": [],
+  "fn": null,
+  "loose": true,
+  "tests": [
+   {
+    "stdin": "5 30\n",
+    "expected": [
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "12",
+     "13",
+     "14",
+     "15",
+     "16",
+     "17",
+     "18",
+     "19",
+     "20",
+     "21",
+     "23",
+     "24",
+     "25",
+     "26",
+     "27",
+     "28",
+     "29",
+     "30",
+     "24"
+    ]
+   },
+   {
+    "stdin": "1 9\n",
+    "expected": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "9"
+    ]
+   },
+   {
+    "stdin": "20 45\n",
+    "expected": [
+     "20",
+     "21",
+     "23",
+     "24",
+     "25",
+     "26",
+     "27",
+     "28",
+     "29",
+     "30",
+     "31",
+     "32",
+     "34",
+     "35",
+     "36",
+     "37",
+     "38",
+     "39",
+     "40",
+     "41",
+     "42",
+     "43",
+     "45",
+     "23"
+    ]
+   }
+  ],
+  "diff": "hard",
+  "pts": 3,
+  "samples": [
+   {
+    "input": "5 30",
+    "output": "5\n6\n7\n8\n9\n10\n12\n13\n14\n15\n...\n29\n30\n24",
+    "note": "The full output has 25 lines. It is shortened here."
+   },
+   {
+    "input": "1 9",
+    "output": "1\n2\n3\n4\n5\n6\n7\n8\n9\n9",
+    "note": ""
+   }
+  ]
+ },
+ {
+  "id": "C29",
+  "title": "Skip last digit bigger than first",
+  "text": "Print the numbers from 1 to 60, one per line, but skip any number whose last digit is greater than its first digit (for example, 12, 13, 23).",
+  "words": [],
+  "fn": null,
+  "loose": false,
+  "tests": [
+   {
+    "stdin": "",
+    "expected": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "20",
+     "21",
+     "22",
+     "30",
+     "31",
+     "32",
+     "33",
+     "40",
+     "41",
+     "42",
+     "43",
+     "44",
+     "50",
+     "51",
+     "52",
+     "53",
+     "54",
+     "55",
+     "60"
+    ]
+   }
+  ],
+  "diff": "hard",
+  "pts": 3,
+  "samples": [
+   {
+    "input": "",
+    "output": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n...\n54\n55\n60",
+    "note": "The full output has 30 lines. It is shortened here."
+   }
+  ]
+ },
+ {
+  "id": "C30",
+  "title": "Range skipping multiples of 4",
+  "text": "Use scanf to ask for two numbers (the first is smaller). Print all the numbers from the first to the second, including both, but skip any number divisible by 4. At the end, print how many numbers were printed, on its own line.",
+  "words": [],
+  "fn": null,
+  "loose": true,
+  "tests": [
+   {
+    "stdin": "1 20\n",
+    "expected": [
+     "1",
+     "2",
+     "3",
+     "5",
+     "6",
+     "7",
+     "9",
+     "10",
+     "11",
+     "13",
+     "14",
+     "15",
+     "17",
+     "18",
+     "19",
+     "15"
+    ]
+   },
+   {
+    "stdin": "5 13\n",
+    "expected": [
+     "5",
+     "6",
+     "7",
+     "9",
+     "10",
+     "11",
+     "13",
+     "7"
+    ]
+   },
+   {
+    "stdin": "30 40\n",
+    "expected": [
+     "30",
+     "31",
+     "33",
+     "34",
+     "35",
+     "37",
+     "38",
+     "39",
+     "8"
+    ]
+   }
+  ],
+  "diff": "hard",
+  "pts": 3,
+  "samples": [
+   {
+    "input": "1 20",
+    "output": "1\n2\n3\n5\n6\n7\n9\n10\n11\n13\n...\n18\n19\n15",
+    "note": "The full output has 16 lines. It is shortened here."
+   },
+   {
+    "input": "5 13",
+    "output": "5\n6\n7\n9\n10\n11\n13\n7",
+    "note": ""
+   }
+  ]
+ }
+];
+QUESTIONS.forEach((q) => { q.pts = POINTS[q.diff]; });
+const MAXPTS = QUESTIONS.reduce((a, q) => a + q.pts, 0);
+
+/* ===== HELPERS ===== */
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const fmt = (s) => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+const store = { get: (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} } };
+let S = null, shown = false, cur = 0, running = false, finished = false, overlayOn = false, cooling = false, lastCopied = null, key = "";
+const fsOK = !!document.documentElement.requestFullscreen;
+
+function tokens(out, words) {
+  const one = words.filter((w) => w.length === 1), many = words.filter((w) => w.length > 1).map((w) => w.toLowerCase()), r = [];
+  for (const t of (out.match(/-?\d+(?:\.\d+)?|[A-Za-z]+/g) || [])) {
+    if (/^-?\d/.test(t)) r.push(t); else if (one.includes(t)) r.push(t); else if (many.includes(t.toLowerCase())) r.push(t.toLowerCase());
+  }
+  return r;
+}
+const eq = (a, b) => (/^-?\d/.test(a) && /^-?\d/.test(b)) ? Math.abs(parseFloat(a) - parseFloat(b)) <= (b.includes(".") ? 0.05 : 1e-9) : a === b;
+function same(got, exp, loose) {
+  if (!loose) return got.length === exp.length && exp.every((x, i) => eq(got[i], x));
+  for (let i = 0; i + exp.length <= got.length; i++) if (exp.every((x, k) => eq(got[i + k], x))) return true;
+  return false;
+}
+const hasFn = (src, name) => new RegExp("\\b(int|void|long|float|double|char)\\s+" + name + "\\s*\\([^)]*\\)\\s*\\{").test(src);
+
+/* ===== START ===== */
+$("startBtn").addEventListener("click", async () => {
+  const last = $("ln").value.trim(), first = $("fn").value.trim(), name = last + ", " + first;
+  if (last.length < 2) return ($("startErr").textContent = "Enter your last name.");
+  if (first.length < 2) return ($("startErr").textContent = "Enter your first name.");
+  key = "olympiad:set1:" + name.toLowerCase(); store.set("olympiad:set1:last", JSON.stringify({ last, first }));
+  let saved = null; try { saved = JSON.parse(store.get(key)); } catch (e) {}
+  S = saved || { name, q: {}, warnings: 0, started: new Date().toISOString() };
+  QUESTIONS.forEach((q) => { S.q[q.id] = S.q[q.id] || { code: STARTER, attempts: 0, secs: 0, solved: false }; });
+  $("start").style.display = "none"; $("app").style.display = "block"; $("ptsBox").style.visibility = "visible";
+  $("who").textContent = S.name;
+  running = true;
+  if (fsOK) { try { await document.documentElement.requestFullscreen(); } catch (e) {} }
+  show(0); updatePts();
+});
+
+/* ===== QUESTIONS UI ===== */
+function points() { return QUESTIONS.reduce((a, q) => a + (S.q[q.id].solved ? q.pts : 0), 0); }
+function updatePts() { $("progBar").style.width = (points() / MAXPTS * 100) + "%"; $("pts").textContent = points(); $("ptsMax").textContent = MAXPTS; $("wn").textContent = S.warnings; save(); }
+let repTimer = null, repQ = null;
+function burst(n) {
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const box = $("burst"), col = ["#34c76f", "#168a43", "#f59e0b", "#f08a24", "#60a5fa", "#f472b6", "#a78bfa"];
+  for (let k = 0; k < n; k++) {
+    const e = document.createElement("i"), r = Math.random;
+    let pos, dx, up, fall;
+    if (CONFIG.confettiFrom === "bottom") {
+      pos = "left:" + ([16, 50, 84][k % 3] + r() * 12 - 6).toFixed(1) + "%;bottom:-16px"; dx = (r() * 2 - 1) * 26; up = -(42 + r() * 52); fall = 12 + r() * 6;
+    } else {
+      const left = k % 2 === 0, y = 4 + r() * 38;                    // launch height: 4% to 42% up from the bottom edge
+      pos = (left ? "left:-14px" : "left:100%") + ";bottom:" + y.toFixed(1) + "%"; dx = (left ? 1 : -1) * (22 + r() * 48); up = -(18 + r() * 52); fall = y + 14 + r() * 6;
+    }
+    e.style.cssText = pos + ";--dx:" + dx.toFixed(1) + "vw;--up:" + up.toFixed(0) + "vh;--fall:" + fall.toFixed(0) + "vh;--r:" + Math.round(r() * 540 - 270) + "deg;--d:" + (r() * 0.25).toFixed(2) + "s;--t:" + (2 + r() * 0.8).toFixed(2) + "s;background:" + col[k % col.length];
+    box.appendChild(e); setTimeout(() => e.remove(), 3500);
+  }
+}
+function stopRepeat() { clearInterval(repTimer); repTimer = null; repQ = null; }
+function startRepeat(qid) {
+  stopRepeat(); if (!CONFIG.confettiRepeatMs) return; repQ = qid;
+  repTimer = setInterval(() => { if (!overlayOn && QUESTIONS[cur].id === repQ && S.q[repQ].solved) burst(75); else if (QUESTIONS[cur].id !== repQ) stopRepeat(); }, CONFIG.confettiRepeatMs);
+}
+function celebrate(done, pts, qid) {
+  const c = $("cel"); c.style.setProperty("--cs", CONFIG.confettiMs + "ms"); c.className = "cel show" + (done ? " big" : "");
+  c.querySelector("h3").textContent = done ? "Challenge complete!" : "You got it!";
+  c.querySelector("p").textContent = done ? "Every question solved. Great job!" : "+" + pts + (pts === 1 ? " point" : " points");
+  burst(done ? 120 : 75); startRepeat(qid);
+  clearTimeout(c._t); c._t = setTimeout(() => { c.className = "cel"; }, CONFIG.confettiMs + (done ? 1500 : 400));
+  const pb = $("ptsBox"); pb.classList.remove("bump"); void pb.offsetWidth; pb.classList.add("bump");
+}
+function save() { if (S) store.set(key, JSON.stringify(S)); }
+function renderSamples(q) {
+  let h = '<h3 class="exh">Expected output</h3>';
+  q.samples.forEach((x, i) => {
+    h += '<div class="ex">';
+    if (x.input !== "") h += '<div class="exl">Example ' + (q.samples.length > 1 ? (i + 1) + " " : "") + '(what you type)</div><pre>' + esc(x.input) + "</pre>";
+    h += '<div class="exl">' + (x.input !== "" ? "Your program prints" : "Your program prints (example)") + "</div><pre>" + esc(x.output) + "</pre>" + (x.note ? '<p class="exn">' + esc(x.note) + "</p>" : "") + "</div>";
+  });
+  $("qs").innerHTML = h + '<p class="exn">Extra spaces, blank lines, and prompts such as "Enter a number:" are fine. The numbers and words must match.</p>';
+}
+function show(i) {
+  stopRepeat();
+  if (shown) S.q[QUESTIONS[cur].id].code = $("code").value;
+  shown = true; cur = i; const q = QUESTIONS[i], st = S.q[q.id];
+  $("qt").textContent = (i + 1) + ". " + q.title; $("qm").textContent = q.diff.charAt(0).toUpperCase() + q.diff.slice(1) + ", " + q.pts + (q.pts === 1 ? " point" : " points");
+  $("qx").textContent = q.text; renderSamples(q);
+  $("qh").innerHTML = q.fn ? "Write the function above <code>main</code>, then call it inside <code>main</code>." : "Write all your code inside <code>main</code>. If you need a function, write it above <code>main</code>.";
+  $("code").value = st.code; $("rn").textContent = st.attempts; $("tm").textContent = fmt(st.secs);
+  $("res").innerHTML = '<h3>Results</h3><p class="meta">Press Run tests (or Ctrl+Enter).</p>';
+  $("prev").disabled = i === 0; $("next").disabled = i === QUESTIONS.length - 1;
+  const L = $("qlist"); L.innerHTML = "";
+  QUESTIONS.forEach((x, k) => { if (k === 0 || QUESTIONS[k - 1].diff !== x.diff) { const h = document.createElement("div"); h.className = "cat " + x.diff; h.innerHTML = "<span>" + x.diff + "</span><span>" + x.pts + (x.pts === 1 ? " point" : " points") + " each</span>"; L.appendChild(h); } const b = document.createElement("button"); b.type = "button"; b.className = "qi" + (k === i ? " on" : "") + (S.q[x.id].solved ? " ok" : ""); b.innerHTML = '<span class="n">' + (k + 1) + "</span><span>" + esc(x.title) + "</span>"; b.addEventListener("click", () => show(k)); L.appendChild(b); });
+  const on = L.querySelectorAll(".qi")[i]; if (on && on.scrollIntoView) on.scrollIntoView({ block: "nearest" });
+}
+$("next").addEventListener("click", () => show(cur + 1));
+$("prev").addEventListener("click", () => show(cur - 1));
+$("reset").addEventListener("click", () => { $("code").value = STARTER; S.q[QUESTIONS[cur].id].code = STARTER; save(); });
+
+/* ===== RUN ===== */
+const b64 = (t) => { const u = new TextEncoder().encode(t); let r = ""; for (let i = 0; i < u.length; i++) r += String.fromCharCode(u[i]); return btoa(r); };
+const unb64 = (t) => (t ? new TextDecoder().decode(Uint8Array.from(atob(t), (c) => c.charCodeAt(0))) : "");
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+async function judge(src, stdin) {
+  const h = { "Content-Type": "application/json" }; if (CONFIG.token) h["X-Auth-Token"] = CONFIG.token;
+  const body = JSON.stringify({ source_code: b64(src), language_id: CONFIG.lang, stdin: b64(stdin || "\n"), cpu_time_limit: 2 });
+  for (let tries = 0; ; tries++) {
+    try {
+      // base64 matters: compiler error messages contain curly quotes, and plain text mode makes the server answer with an error
+      const r = await fetch(CONFIG.url + "/submissions?base64_encoded=true&wait=true", { method: "POST", headers: h, body });
+      if (r.status === 429 || r.status >= 500) throw new Error("BUSY");
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      const j = await r.json();
+      return { status: j.status, stdout: unb64(j.stdout), compile_output: unb64(j.compile_output) };
+    } catch (e) {
+      if (/^HTTP/.test(e.message) || tries >= 2) throw e;
+      await sleep(1200 * (tries + 1));
+    }
+  }
+}
+function msg(html) { $("res").innerHTML = "<h3>Results</h3>" + html; }
+async function runTests() {
+  if (cooling || overlayOn || finished) return;
+  const q = QUESTIONS[cur], st = S.q[q.id], code = $("code").value; st.code = code;
+  if (code.trim().length < 20) return msg('<div class="box">Write your code first.</div>');
+  if (q.fn && !hasFn(code, q.fn)) return msg('<div class="box">Your program must define a function named <code>' + q.fn + "</code>.</div>");
+  st.attempts++; $("rn").textContent = st.attempts; save();
+  $("run").disabled = true; $("run").textContent = "Running…"; msg('<p class="meta">Compiling and running…</p>');
+  try {
+    const rs = await Promise.all(q.tests.map((t) => judge(code, t.stdin)));
+    const bad = rs.find((r) => r.status && r.status.id !== 3);
+    if (bad) {
+      const id = bad.status.id;
+      if (id === 6) msg('<div class="box"><strong>Your code did not compile.</strong></div><pre>' + esc((bad.compile_output || "").replace(/prog\.c|main\.c/g, "your code")) + "</pre>");
+      else if (id === 5) msg('<div class="box">Time limit exceeded. Check for a loop that never ends.</div>');
+      else if (id >= 7 && id <= 12) msg('<div class="box">Your program crashed while running. Check your code.</div>');
+      else msg('<div class="box">The code runner had a problem. Wait a few seconds and run again.</div>');
+    } else {
+      const rows = q.tests.map((t, i) => { const got = tokens(rs[i].stdout || "", q.words), ok = same(got, t.expected, q.loose); return { t, ok, out: (rs[i].stdout || "").replace(/\s+$/, "").split("\n").slice(0, 300).join("\n").slice(0, 6000) }; });
+      const all = rows.every((r) => r.ok), n = rows.filter((r) => r.ok).length;
+      let note = "";
+      if (all && !st.solved) { st.solved = true; note = " +" + q.pts + (q.pts === 1 ? " point!" : " points!"); setTimeout(() => celebrate(QUESTIONS.every((x) => S.q[x.id].solved), q.pts, q.id), 200); }
+      msg('<p><strong>' + n + " of " + rows.length + " tests passed." + note + "</strong></p><table><thead><tr><th>Test</th><th>Your output</th><th>Result</th></tr></thead><tbody>" +
+        rows.map((r, i) => '<tr><td>' + (i + 1) + (r.t.stdin.trim() ? '<div class="inp">Input: ' + esc(r.t.stdin.trim()) + "</div>" : "") + '</td><td class="m"><pre class="co">' + esc(r.out || "(no output)") + '</pre></td><td><span class="b ' + (r.ok ? "p" : "f") + '">' + (r.ok ? "Pass" : "Fail") + "</span></td></tr>").join("") + "</tbody></table>" +
+        (all ? "" : '<p class="meta">Check your output against the question. Extra spaces and prompts are fine, but the numbers and words must be right.</p>'));
+      updatePts(); show2(); $("res").classList.toggle("ok", all);
+    }
+  } catch (e) {
+    msg('<div class="box">' + (e.message === "BUSY" ? "The code runner is busy. Wait about 10 seconds, then press Run tests again." : /^HTTP/.test(e.message) ? "The code runner returned an error (" + e.message + "). Press Run tests again, and tell your teacher if it keeps happening." : "Could not reach the code runner. Check your internet and try again.") + "</div>");
+  }
+  $("run").textContent = "Run tests"; cool();
+}
+function show2() { document.querySelectorAll(".qi")[cur].classList.toggle("ok", S.q[QUESTIONS[cur].id].solved); }
+function cool() { cooling = true; let n = CONFIG.cooldown; const b = $("run"); b.disabled = true; (function t() { if (n <= 0) { cooling = false; b.disabled = false; b.textContent = "Run tests"; return; } b.textContent = "Run again in " + n-- + "s"; setTimeout(t, 1000); })(); }
+$("run").addEventListener("click", runTests);
+
+/* ===== EDITOR: Tab, Ctrl+Enter, no outside paste ===== */
+const ta = $("code");
+ta.addEventListener("keydown", (e) => {
+  if (e.key === "Tab") { e.preventDefault(); const s = ta.selectionStart; ta.value = ta.value.slice(0, s) + "    " + ta.value.slice(ta.selectionEnd); ta.selectionStart = ta.selectionEnd = s + 4; }
+  else if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); runTests(); }
+});
+ta.addEventListener("copy", () => { lastCopied = ta.value.slice(ta.selectionStart, ta.selectionEnd); });
+ta.addEventListener("cut", () => { lastCopied = ta.value.slice(ta.selectionStart, ta.selectionEnd); });
+ta.addEventListener("paste", (e) => { if (CONFIG.allowCopyPaste) return; const t = (e.clipboardData || window.clipboardData).getData("text"); if (lastCopied === null || t !== lastCopied) { e.preventDefault(); flash(); } });
+ta.addEventListener("drop", (e) => { if (!CONFIG.allowCopyPaste) e.preventDefault(); });
+let saveT = null;
+ta.addEventListener("input", () => { S.q[QUESTIONS[cur].id].code = ta.value; clearTimeout(saveT); saveT = setTimeout(save, 400); });
+function flash() { $("res").innerHTML = '<h3>Results</h3><div class="box">Pasting from outside is not allowed.</div>'; }
+document.addEventListener("copy", (e) => { if (!CONFIG.allowCopyPaste && e.target !== ta) e.preventDefault(); });
+document.addEventListener("contextmenu", (e) => { if (!CONFIG.allowCopyPaste) e.preventDefault(); });
+document.querySelector(".q").id = "qa";
+function applyCopyRules() { $("qa").classList.toggle("nosel", !CONFIG.allowCopyPaste); }
+applyCopyRules();
+
+/* ===== FULL SCREEN AND FOCUS GUARD ===== */
+function guard(title, p) {
+  if (!running || finished || overlayOn) return;
+  overlayOn = true; S.warnings++; updatePts();
+  $("ovT").textContent = title; $("ovP").textContent = p; $("ov").style.display = "flex";
+}
+$("ovB").addEventListener("click", async () => {
+  if (fsOK) { try { await document.documentElement.requestFullscreen(); } catch (e) {} }
+  if (!fsOK || document.fullscreenElement) { overlayOn = false; $("ov").style.display = "none"; ta.focus(); }
+});
+document.addEventListener("fullscreenchange", () => { if (fsOK && running && !finished && !document.fullscreenElement) guard("You left full screen", "Return to full screen to continue. This was counted as a warning and your teacher can see it."); });
+document.addEventListener("visibilitychange", () => { if (document.hidden) guard("You switched tabs", "Stay on this page. This was counted as a warning."); });
+window.addEventListener("blur", () => setTimeout(() => { if (!document.hasFocus()) guard("The quiz lost focus", "Stay on this page. This was counted as a warning."); }, 300));
+document.addEventListener("fullscreenchange", () => { if (document.fullscreenElement && overlayOn) { overlayOn = false; $("ov").style.display = "none"; } });
+
+/* ===== TIMER (counts only while the question is on screen and no warning is showing) ===== */
+let tick = 0;
+setInterval(() => {
+  if (!running || finished || overlayOn || document.hidden) return;
+  const st = S.q[QUESTIONS[cur].id]; st.secs++; $("tm").textContent = fmt(st.secs);
+  if (++tick % 5 === 0) save();
+}, 1000);
+
+/* ===== FINISH ===== */
+function summary() {
+  const secs = QUESTIONS.reduce((a, q) => a + S.q[q.id].secs, 0), runs = QUESTIONS.reduce((a, q) => a + S.q[q.id].attempts, 0), done = QUESTIONS.filter((q) => S.q[q.id].solved).length;
+  const line = S.name + " | " + done + "/" + QUESTIONS.length + " solved | " + points() + "/" + MAXPTS + " pts | time " + fmt(secs) + " | runs " + runs + " | warnings " + S.warnings;
+  return { line, html: esc(S.name) + "<br>Solved: " + done + " of " + QUESTIONS.length + "<br>Points: <strong>" + points() + " / " + MAXPTS + "</strong><br>Total time: " + fmt(secs) + "<br>Runs: " + runs + "<br>Warnings: " + S.warnings + "<br><br>Show this screen to your teacher." };
+}
+$("fin").addEventListener("click", () => { stopRepeat(); S.q[QUESTIONS[cur].id].code = ta.value; save(); const s = summary(); $("sumP").innerHTML = s.html; $("sum").style.display = "flex"; });
+$("sumX").addEventListener("click", () => { $("sum").style.display = "none"; });
+$("copy").addEventListener("click", async () => { try { await navigator.clipboard.writeText(summary().line); $("copy").textContent = "Copied"; } catch (e) { $("copy").textContent = "Copy failed. Show the screen."; } });
+window.addEventListener("pagehide", () => { if (S) { S.q[QUESTIONS[cur].id].code = ta.value; save(); } });
+window.addEventListener("beforeunload", (e) => { if (S) { S.q[QUESTIONS[cur].id].code = ta.value; save(); if (CONFIG.confirmLeave) { e.preventDefault(); e.returnValue = ""; } } });
+(function welcomeBack() {
+  let l = null; try { l = JSON.parse(store.get("olympiad:set1:last")); } catch (e) {}
+  if (!l || !l.last) return;
+  $("ln").value = l.last; $("fn").value = l.first || "";
+  $("startBtn").textContent = "Continue where I left off";
+  $("startNote").textContent = "Welcome back, " + l.first + ". Your points, code, and times were saved on this device.";
+})();
+</script>
+</body>
+</html>
